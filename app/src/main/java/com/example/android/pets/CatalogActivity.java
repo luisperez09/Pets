@@ -70,8 +70,6 @@ public class CatalogActivity extends AppCompatActivity {
      * the pets database.
      */
     private void displayDatabaseInfo() {
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 PetEntry._ID,
                 PetEntry.COLUMN_PET_NAME,
@@ -80,8 +78,8 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_WEIGHT
         };
 
-        // Perform a query on the pets table
-        Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
+        // Performs a query on the provider using the ContentResolver
+        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, projection, null, null, null);
         TextView displayView = (TextView) findViewById(R.id.text_view_pet);
 
         try {

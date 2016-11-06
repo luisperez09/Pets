@@ -58,6 +58,8 @@ public class PetProvider extends ContentProvider {
 
     /**
      * Perform the query for the given URI. Use the given projection, selection, selection arguments, and sort order.
+     *
+     * @return Cursor object containing results of query
      */
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
@@ -83,6 +85,8 @@ public class PetProvider extends ContentProvider {
 
     /**
      * Insert new data into the provider with the given ContentValues.
+     *
+     * @return the content URI for the row inserted in the database
      */
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
@@ -96,8 +100,9 @@ public class PetProvider extends ContentProvider {
     }
 
     /**
-     * Insert a pet into the database with the given content values. Return the new content URI
-     * for that specific row in the database.
+     * Insert a pet into the database with the given content values.
+     *
+     * @return the new content URI for that specific row in the database.
      */
     private Uri insertPet(Uri uri, ContentValues values) {
         // name validation: not null
@@ -129,6 +134,8 @@ public class PetProvider extends ContentProvider {
 
     /**
      * Updates the data at the given selection and selection arguments, with the new ContentValues.
+     *
+     * @return the number of rows updated
      */
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
@@ -183,6 +190,8 @@ public class PetProvider extends ContentProvider {
 
     /**
      * Delete the data at the given selection and selection arguments.
+     *
+     * @return the number of rows deleted
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
@@ -193,7 +202,7 @@ public class PetProvider extends ContentProvider {
                 return db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
             case PETS_ID:
                 selection = PetEntry._ID + "=?";
-                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
@@ -212,7 +221,7 @@ public class PetProvider extends ContentProvider {
             case PETS_ID:
                 return PetEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new IllegalStateException("Unknown URI " + uri +  "with match " + match);
+                throw new IllegalStateException("Unknown URI " + uri + "with match " + match);
         }
     }
 }

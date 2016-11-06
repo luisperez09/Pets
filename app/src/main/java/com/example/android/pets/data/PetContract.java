@@ -1,11 +1,28 @@
 package com.example.android.pets.data;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
  * API Contract for the Pets app.
  */
 public final class PetContract {
+
+    /**
+     * Name of the entire Content Provider
+     */
+    public static final String CONTENT_AUTHORITY = "com.example.android.pets";
+
+    /**
+     * Base of all URI's that apps will use to contact the content provider
+     */
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    /**
+     * Possible path to be appended to {@link #CONTENT_AUTHORITY} to build valid URI's
+     */
+    public static final String PATH_PETS = "pets";
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
@@ -17,6 +34,24 @@ public final class PetContract {
      * Each entry in the table represents a single pet.
      */
     public static final class PetEntry implements BaseColumns {
+
+        /**
+         * The content URI to access the pet data in the provider
+         */
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a list of pets.
+         */
+        public static final String CONTENT_LIST_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a single pet.
+         */
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PETS;
+
         /**
          * Name of database table for pets
          */
@@ -24,38 +59,38 @@ public final class PetContract {
 
         /**
          * Unique ID number for the pet (only for use in the database table).
-         * <p/>
+         * <p>
          * Type: INTEGER
          */
         public static final String _ID = BaseColumns._ID;
 
         /**
          * Name of the pet
-         * <p/>
+         * <p>
          * Type: TEXT
          */
         public static final String COLUMN_PET_NAME = "name";
 
         /**
          * Breed of the pet
-         * <p/>
+         * <p>
          * Type: TEXT
          */
         public static final String COLUMN_PET_BREED = "breed";
 
         /**
          * Gender of the pet
-         * <p/>
+         * <p>
          * The only possible values are {@link #GENDER_UNKNOWN}, {@link #GENDER_MALE},
          * {@link #GENDER_FEMALE}
-         * <p/>
+         * <p>
          * Type: INTEGER
          */
         public static final String COLUMN_PET_GENDER = "gender";
 
         /**
          * Weight of the pet
-         * <p/>
+         * <p>
          * Type: INTEGER
          */
         public static final String COLUMN_PET_WEIGHT = "weight";
@@ -66,5 +101,19 @@ public final class PetContract {
         public static final int GENDER_UNKNOWN = 0;
         public static final int GENDER_MALE = 1;
         public static final int GENDER_FEMALE = 2;
+
+        /**
+         * Returns whether or not the given gender is {@link #GENDER_UNKNOWN}, {@link #GENDER_MALE}
+         * or {@link #GENDER_FEMALE}
+         *
+         * @param gender gender of the pet to validate
+         * @return true if gender is valid, false otherwise
+         */
+        public static boolean isValidGender(int gender) {
+            if (gender == GENDER_UNKNOWN || gender == GENDER_MALE || gender == GENDER_FEMALE) {
+                return true;
+            }
+            return false;
+        }
     }
 }

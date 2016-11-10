@@ -145,7 +145,10 @@ public class EditorActivity extends AppCompatActivity implements
         });
     }
 
-    private void insertPet() {
+    /**
+     * Get user input from editor and save pet into database
+     */
+    private void savePet() {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         String nameString = mNameEditText.getText().toString().trim();
@@ -159,11 +162,23 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetEntry.COLUMN_PET_WEIGHT, weight);
 
-        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
-        if (newUri == null) {
-            Toast.makeText(EditorActivity.this, R.string.editor_insert_pet_failed, Toast.LENGTH_SHORT).show();
+        // Check whether this is a new or existing pet
+        if (mCurrentPetUri == null) {
+            // This is a new pet
+            Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+            if (newUri == null) {
+                Toast.makeText(EditorActivity.this, R.string.editor_insert_pet_failed, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(EditorActivity.this, R.string.editor_insert_pet_successful, Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(EditorActivity.this, R.string.editor_insert_pet_successful, Toast.LENGTH_SHORT).show();
+            // This is an existing pet
+            int rowsUpdated = getContentResolver().update(mCurrentPetUri, values, null, null);
+            if (rowsUpdated > 0) {
+                Toast.makeText(EditorActivity.this, R.string.editor_update_pet_successful, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(EditorActivity.this, R.string.editor_update_pet_failed, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -183,7 +198,7 @@ public class EditorActivity extends AppCompatActivity implements
             case R.id.action_save:
                 // Save pet to database
                 // Exit activity
-                insertPet();
+                savePet();
                 finish();
                 return true;
             // Respond to a click on the "Delete" menu option

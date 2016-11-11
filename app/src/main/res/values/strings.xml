@@ -109,4 +109,7 @@
 
     <!-- Toast message in catalog when all pets were successfully deleted [CHAR LIMIT=NONE] -->
     <string name="delete_all_successful">All pets were deleted</string>
+
+    <!-- Label for the pet's breed if the breed is unknown [CHAR LIMIT=20] -->
+    <string name="unknown_breed">Unknown breed</string>
 </resources>

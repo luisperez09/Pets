@@ -58,6 +58,8 @@ public class PetProvider extends ContentProvider {
 
     /**
      * Perform the query for the given URI. Use the given projection, selection, selection arguments, and sort order.
+     *
+     * @return Cursor object containing results of query
      */
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
@@ -78,11 +80,16 @@ public class PetProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
+        // Set notification on cursor with given URI in order to update the cursor when data at
+        // the URI changes
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
     /**
      * Insert new data into the provider with the given ContentValues.
+     *
+     * @return the content URI for the row inserted in the database
      */
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
@@ -96,8 +103,9 @@ public class PetProvider extends ContentProvider {
     }
 
     /**
-     * Insert a pet into the database with the given content values. Return the new content URI
-     * for that specific row in the database.
+     * Insert a pet into the database with the given content values.
+     *
+     * @return the new content URI for that specific row in the database.
      */
     private Uri insertPet(Uri uri, ContentValues values) {
         // name validation: not null
@@ -124,11 +132,16 @@ public class PetProvider extends ContentProvider {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
+        // Notify al listeners that the data changed for the pet content URI
+        getContext().getContentResolver().notifyChange(uri, null);
+
         return ContentUris.withAppendedId(uri, id);
     }
 
     /**
      * Updates the data at the given selection and selection arguments, with the new ContentValues.
+     *
+     * @return the number of rows updated
      */
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
@@ -178,26 +191,41 @@ public class PetProvider extends ContentProvider {
         /* End of validation*/
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        return db.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+        int rowsUpdated = db.update(PetEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        // If any number of rows were updated, notify listeners that the data at the URI has changed
+        if (rowsUpdated > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     /**
      * Delete the data at the given selection and selection arguments.
+     *
+     * @return the number of rows deleted
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int rowsDeleted;
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PETS:
-                return db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             case PETS_ID:
                 selection = PetEntry._ID + "=?";
-                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
-                return db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = db.delete(PetEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
+        if (rowsDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     /**
@@ -212,7 +240,7 @@ public class PetProvider extends ContentProvider {
             case PETS_ID:
                 return PetEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new IllegalStateException("Unknown URI " + uri +  "with match " + match);
+                throw new IllegalStateException("Unknown URI " + uri + "with match " + match);
         }
     }
 }

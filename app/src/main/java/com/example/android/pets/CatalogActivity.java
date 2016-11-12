@@ -52,7 +52,12 @@ public class CatalogActivity extends AppCompatActivity implements
     /**
      * Adapter for the ListView
      */
-    PetCursorAdapter mCursorAdapter;
+    private PetCursorAdapter mCursorAdapter;
+
+    /**
+     * Flag to check whether cursor is empty
+     */
+    private boolean mIsEmptyCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +99,9 @@ public class CatalogActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(PET_LOADER, null, this);
     }
 
-
+    /**
+     * Helper method to insert hardcoded pet data into the database. For debugging purposes only
+     */
     private void insertPet() {
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Toto");
@@ -104,6 +111,9 @@ public class CatalogActivity extends AppCompatActivity implements
         Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
     }
 
+    /**
+     * Helper method to delete all pets in the database
+     */
     private void deleteAllPets() {
         int rowsDeleted = getContentResolver().delete(PetEntry.CONTENT_URI, null, null);
         if (rowsDeleted > 0) {
@@ -114,32 +124,27 @@ public class CatalogActivity extends AppCompatActivity implements
         }
     }
 
-    private void showDeleteAllDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.delete_all_dialog_msg));
-        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                deleteAllPets();
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_catalog.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
+        return true;
+    }
+
+    /**
+     * Hide "delete all pets" option from the menu if the cursor is empty.
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.action_delete_all_entries);
+        if (mIsEmptyCursor) {
+            menuItem.setVisible(false);
+        } else {
+            menuItem.setVisible(true);
+        }
         return true;
     }
 
@@ -165,15 +170,51 @@ public class CatalogActivity extends AppCompatActivity implements
         return new CursorLoader(this, PetEntry.CONTENT_URI, projection, null, null, null);
     }
 
+    /**
+     * Besides its main purpose, this method will check if the returned cursor is empty and will
+     * flag {@link #mIsEmptyCursor} so it can hide option from menu later on
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         // Update {@link PetCursorAdapter} with this new cursor containing updated pet data
         mCursorAdapter.swapCursor(cursor);
+
+        // If cursor is null set flag to true in order to hide "delete all pets" option from the menu
+        if (cursor == null || cursor.getCount() == 0) {
+            mIsEmptyCursor = true;
+            invalidateOptionsMenu();
+        } else {
+            mIsEmptyCursor = false;
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // Callback called when the data needs to be deleted
         mCursorAdapter.swapCursor(null);
+    }
+
+    /**
+     * Prompt the user for confirmation to delete all entries from the datbase
+     */
+    private void showDeleteAllDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.delete_all_dialog_msg));
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteAllPets();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

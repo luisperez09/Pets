@@ -110,7 +110,7 @@ public class CatalogActivity extends AppCompatActivity implements
             Toast.makeText(this, R.string.delete_all_successful, Toast.LENGTH_SHORT).show();
             Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
         } else {
-            Toast.makeText(this, "Error with deleting pets", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.catalog_delete_all_failed, Toast.LENGTH_SHORT).show();
         }
     }
 

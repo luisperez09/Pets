@@ -115,4 +115,7 @@
 
     <!-- Toast message in editor when user tries to input empty name [CHAR LIMIT=NONE] -->
     <string name="editor_pet_requires_name">Pet requires valid name</string>
+
+    <!-- Toast message in catalog when all pets have failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="catalog_delete_all_failed">Error with deleting pets</string>
 </resources>

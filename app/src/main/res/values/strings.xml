@@ -112,4 +112,7 @@
 
     <!-- Label for the pet's breed if the breed is unknown [CHAR LIMIT=20] -->
     <string name="unknown_breed">Unknown breed</string>
+
+    <!-- Toast message in editor when user tries to input empty name [CHAR LIMIT=NONE] -->
+    <string name="editor_pet_requires_name">Pet requires valid name</string>
 </resources>

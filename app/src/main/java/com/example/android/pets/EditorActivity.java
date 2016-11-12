@@ -184,9 +184,17 @@ public class EditorActivity extends AppCompatActivity implements
         String breedString = mBreedEditText.getText().toString().trim();
         String weightString = mWeightEditText.getText().toString().trim();
 
+        // All fields are blank, so finish activity
         if (mCurrentPetUri == null && TextUtils.isEmpty(nameString) &&
                 TextUtils.isEmpty(breedString) && TextUtils.isEmpty(weightString) &&
                 mGender == PetEntry.GENDER_UNKNOWN) {
+            finish();
+            return;
+        }
+
+        // If fields are not blank but name input is, tell the user a valid name must be provided
+        if (TextUtils.isEmpty(nameString)){
+            Toast.makeText(this, R.string.editor_pet_requires_name, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -220,6 +228,8 @@ public class EditorActivity extends AppCompatActivity implements
                 Toast.makeText(EditorActivity.this, R.string.editor_update_pet_failed, Toast.LENGTH_SHORT).show();
             }
         }
+        // Pet was saved, finish activity
+        finish();
     }
 
     @Override
@@ -253,7 +263,6 @@ public class EditorActivity extends AppCompatActivity implements
                 // Save pet to database
                 // Exit activity
                 savePet();
-                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:

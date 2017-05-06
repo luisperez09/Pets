@@ -17,7 +17,6 @@ package com.example.android.pets;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -100,18 +99,6 @@ public class CatalogActivity extends AppCompatActivity implements
     }
 
     /**
-     * Helper method to insert hardcoded pet data into the database. For debugging purposes only
-     */
-    private void insertPet() {
-        ContentValues values = new ContentValues();
-        values.put(PetEntry.COLUMN_PET_NAME, "Toto");
-        values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
-        values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
-        values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
-        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
-    }
-
-    /**
      * Helper method to delete all pets in the database
      */
     private void deleteAllPets() {
@@ -152,10 +139,6 @@ public class CatalogActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            // Respond to a click on the "Insert dummy data" menu option
-            case R.id.action_insert_dummy_data:
-                insertPet();
-                return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 showDeleteAllDialog();

@@ -3,7 +3,6 @@
     <string name="app_name">Pets</string>
     <string name="action_delete">Eliminar</string>
     <string name="action_delete_all_entries">Eliminar todo</string>
-    <string name="action_insert_dummy_data">Insertar datos de prueba</string>
     <string name="action_save">Guardar</string>
     <string name="cancel">Cancelar</string>
     <string name="catalog_delete_all_failed">Error al eliminar mascotas</string>

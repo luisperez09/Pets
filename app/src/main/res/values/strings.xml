@@ -20,6 +20,14 @@
     <!-- Label for overflow menu option that deletes all pet data in the app [CHAR LIMIT=20] -->
     <string name="action_delete_all_entries">Delete All Pets</string>
 
+    <!-- Label for overflow menu option that shows information of the app [CHAR LIMIT=20] -->
+    <string name="action_about_app">About this App</string>
+
+    <string name="about_text">This App handles an inventory of pets for a pet shelter. It saves
+    pet information into a database. \n\nIt utilizes Listviews, Cursor Loader, Cursor Adapter and
+        Content Provider.
+    </string>
+
     <!-- Title for the activity to add a new pet [CHAR LIMIT=20] -->
     <string name="editor_activity_title_new_pet">Add a Pet</string>
 

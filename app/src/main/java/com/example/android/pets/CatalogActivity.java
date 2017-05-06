@@ -160,6 +160,10 @@ public class CatalogActivity extends AppCompatActivity implements
             case R.id.action_delete_all_entries:
                 showDeleteAllDialog();
                 return true;
+            // Show information about the app
+            case R.id.action_about:
+                startActivity(new Intent(CatalogActivity.this, AboutActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

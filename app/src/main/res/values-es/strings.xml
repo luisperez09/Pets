@@ -36,4 +36,8 @@
     <string name="unit_pet_weight">kg</string>
     <string name="unknown_breed">Raza desconocida</string>
     <string name="unsaved_changes_dialog_msg">¿Descartar cambios y salir del modo de edición?</string>
+    <string name="about_text">Esta App administra un inventario de mascotas para un refugio de animales.
+        Almacena información de la mascota en una base de datos. \n\nUtiliza Listviews, Cursor Loader,
+    Cursor Adapter y Content Provider</string>
+    <string name="action_about_app">Acerca de esta App</string>
 </resources>

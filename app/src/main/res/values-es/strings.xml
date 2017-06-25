@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pets</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_delete_all_entries">Eliminar todo</string>
+    <string name="action_save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="catalog_delete_all_failed">Error al eliminar mascotas</string>
+    <string name="category_gender">Género</string>
+    <string name="category_measurement">Tamaño</string>
+    <string name="category_overview">Resumen</string>
+    <string name="delete">Eliminar</string>
+    <string name="delete_all_dialog_msg">¿Desea eliminar todas las mascotas?</string>
+    <string name="delete_all_successful">Se han eliminado todas las mascotas</string>
+    <string name="delete_dialog_msg">¿Desea eliminar esta mascota?</string>
+    <string name="discard">Descartar</string>
+    <string name="editor_activity_title_edit_pet">Editar mascota</string>
+    <string name="editor_activity_title_new_pet">Agregar mascota</string>
+    <string name="editor_delete_pet_failed">Error al eliminar mascota</string>
+    <string name="editor_delete_pet_successful">Mascota elliminada</string>
+    <string name="editor_insert_pet_failed">Error al guardar la mascota</string>
+    <string name="editor_insert_pet_successful">Mascota guardada</string>
+    <string name="editor_pet_requires_name">Se requiere un nombre válido</string>
+    <string name="editor_update_pet_failed">Error al actualizar mascota</string>
+    <string name="editor_update_pet_successful">Mascota actualizada</string>
+    <string name="empty_view_subtitle_text">Puedes comenzar agregando una mascota</string>
+    <string name="empty_view_title_text">Esto está un poco solo...</string>
+    <string name="gender_female">Hembra</string>
+    <string name="gender_male">Macho</string>
+    <string name="gender_unknown">Desconocido</string>
+    <string name="hint_pet_breed">Raza</string>
+    <string name="hint_pet_name">Nombre</string>
+    <string name="hint_pet_weight">Peso</string>
+    <string name="keep_editing">Seguir editando</string>
+    <string name="unit_pet_weight">kg</string>
+    <string name="unknown_breed">Raza desconocida</string>
+    <string name="unsaved_changes_dialog_msg">¿Descartar cambios y salir del modo de edición?</string>
+    <string name="about_text">Esta App administra un inventario de mascotas para un refugio de animales.
+        Almacena información de la mascota en una base de datos. \n\nUtiliza Listviews, Cursor Loader,
+    Cursor Adapter y Content Provider</string>
+    <string name="action_about_app">Acerca de esta App</string>
+</resources>
